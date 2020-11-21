@@ -1,0 +1,22 @@
+service: lambda-quarkus
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: provided
+  stage: dev
+  region: us-east-1
+package:
+  individually: true
+functions:
+  hello:
+    handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+    runtime: provided
+    package:
+      artifact: target/function.zip
+    events:
+      - http:
+          path: lambda-quarkus
+          method: post
+    environment:
+      DISABLE_SIGNAL_HANDLERS: true
